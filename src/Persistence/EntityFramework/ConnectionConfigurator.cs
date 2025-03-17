@@ -104,6 +104,9 @@ public static class ConnectionConfigurator
     {
         // see https://github.com/dotnet/efcore/issues/34431
         optionsBuilder.ConfigureWarnings(a => a.Ignore(RelationalEventId.PendingModelChangesWarning));
+#if DEBUG
+        optionsBuilder.EnableSensitiveDataLogging();
+#endif
 
         var type = context.GetType();
         if (type.IsGenericType)

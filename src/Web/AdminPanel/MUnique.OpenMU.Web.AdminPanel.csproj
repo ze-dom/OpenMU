@@ -57,9 +57,9 @@
   </ItemGroup>
 
 
-  <ItemGroup Condition="'$(ci)'!='true'">
+  <!--<ItemGroup Condition="'$(ci)'!='true'">
     <PackageReference Include="BuildWebCompiler2022" Version="1.14.10" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <Content Update="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css">
