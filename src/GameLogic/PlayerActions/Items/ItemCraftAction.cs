@@ -67,17 +67,17 @@ public class ItemCraftAction
         {
             // Wing crafting is similar but has one extra requirement (chaos weapon) than
             // chaos weapon crafting, so we set a descending order so it gets get checked first
-            foreach (var itemCrafting in npc.ItemCraftings.OrderByDescending(c => c.Number))
+            foreach (var crafting in npc.ItemCraftings.OrderByDescending(c => c.Number))
             {
-                if (!this._craftingHandlerCache.TryGetValue(itemCrafting, out var craftingHandler))
+                if (!this._craftingHandlerCache.TryGetValue(crafting, out var craftingHandler))
                 {
-                    craftingHandler = this.CreateCraftingHandler(itemCrafting);
-                    this._craftingHandlerCache.Add(itemCrafting, craftingHandler);
+                    craftingHandler = this.CreateCraftingHandler(crafting);
+                    this._craftingHandlerCache.Add(crafting, craftingHandler);
                 }
 
                 if (craftingHandler.TryGetRequiredItems(player, out _, out _) is null)
                 {
-                    return itemCrafting;
+                    return crafting;
                 }
             }
         }
