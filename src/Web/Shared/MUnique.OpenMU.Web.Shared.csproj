@@ -62,9 +62,9 @@
     <PackageReference Include="SixLabors.ImageSharp.Drawing" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(ci)'!='true'">
+  <!--<ItemGroup Condition="'$(ci)'!='true'">
     <PackageReference Include="BuildWebCompiler2022" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\..\GameLogic\MUnique.OpenMU.GameLogic.csproj" />

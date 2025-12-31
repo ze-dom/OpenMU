@@ -50,15 +50,58 @@ internal class LowLevel : AccountInitializerBase
 
         character.Inventory!.Items.Add(this.CreateShortBow(1));
         character.Inventory.Items.Add(this.CreateArrows(0));
-        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.ArmorSlot, 10, 8)); // Vine Armor
-        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.HelmSlot, 10, 7)); // Vine Helm
-        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.PantsSlot, 10, 9)); // Vine Pants
-        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.GlovesSlot, 10, 10)); // Vine Gloves
-        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.BootsSlot, 10, 11)); // Vine Boots
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.ArmorSlot, 10, 8, 9, 1, true)); // Vine Armor
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.HelmSlot, 10, 7, 10, 2, true)); // Vine Helm
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.PantsSlot, 10, 9, 11, 3, true)); // Vine Pants
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.GlovesSlot, 10, 10, 10, 4)); // Vine Gloves
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.BootsSlot, 10, 11, 9, 4)); // Vine Boots
 
         character.Inventory.Items.Add(this.CreateOrb(67, 8)); // Healing Orb
         character.Inventory.Items.Add(this.CreateOrb(75, 9)); // Defense Orb
         character.Inventory.Items.Add(this.CreateOrb(68, 10)); // Damage Orb
+
+        var wings = this.Context.CreateNew<Item>();
+        wings.Definition = this.GameConfiguration.Items.First(def => def.Group == 12 && def.Number == 0);
+        wings.Durability = wings.Definition?.Durability ?? 0;
+        wings.ItemSlot = 36;
+        character.Inventory.Items.Add(wings);
+
+        for (int i = 0; i < 3; i++)
+        {
+            var uniria = this.Context.CreateNew<Item>();
+            uniria.Definition = this.GameConfiguration.Items.First(def => def.Group == 13 && def.Number == 2);
+            uniria.Durability = uniria.Definition?.Durability ?? 0;
+            uniria.ItemSlot = (byte)(53 + i);
+            character.Inventory.Items.Add(uniria);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            var jol = this.Context.CreateNew<Item>();
+            jol.Definition = this.GameConfiguration.Items.First(def => def.Group == 14 && def.Number == 16);
+            jol.Durability = jol.Definition?.Durability ?? 0;
+            jol.ItemSlot = (byte)(56 + i);
+            character.Inventory.Items.Add(jol);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            var deye = this.Context.CreateNew<Item>();
+            deye.Definition = this.GameConfiguration.Items.First(def => def.Group == 14 && def.Number == 17);
+            deye.Level = (byte)(i + 1);
+            deye.ItemSlot = (byte)(60 + i);
+            character.Inventory.Items.Add(deye);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            var dkey = this.Context.CreateNew<Item>();
+            dkey.Definition = this.GameConfiguration.Items.First(def => def.Group == 14 && def.Number == 18);
+            dkey.Level = (byte)(i + 1);
+            dkey.ItemSlot = (byte)(64 + i);
+            character.Inventory.Items.Add(dkey);
+        }
+
         this.AddElfItems(character.Inventory);
         return character;
     }
