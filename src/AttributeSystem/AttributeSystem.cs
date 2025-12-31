@@ -113,7 +113,8 @@ public class AttributeSystem : IAttributeSystem, IEnumerable<IAttribute>
         var element = this.GetAttribute(attributeDefinition);
         if (element != null)
         {
-            if (attributeDefinition?.MaximumValue is { } maximumValue && element.Value > maximumValue)
+            var actualDefinition = (element as BaseAttribute)?.Definition ?? attributeDefinition;
+            if (actualDefinition?.MaximumValue is { } maximumValue && element.Value > maximumValue)
             {
                 return maximumValue;
             }
@@ -238,7 +239,7 @@ public class AttributeSystem : IAttributeSystem, IEnumerable<IAttribute>
     /// <param name="combination">The combination.</param>
     private void AddAttributeRelationship(AttributeRelationship combination)
     {
-        this.AddAttributeRelationship(combination, this, AggregateType.AddRaw);
+        this.AddAttributeRelationship(combination, this, combination.AggregateType);
     }
 
     private IElement? GetAttribute(AttributeDefinition? attributeDefinition)

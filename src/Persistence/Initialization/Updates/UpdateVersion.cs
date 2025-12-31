@@ -249,4 +249,89 @@ public enum UpdateVersion
     /// The version of the <see cref="FixItemOptionsAndAttackSpeedPlugInSeason6"/>.
     /// </summary>
     FixItemOptionsAndAttackSpeedSeason6 = 48,
+
+    /// <summary>
+    /// The version of the <see cref="Updates.FixHorseFenrirOptionsSoulBarrierPlugIn"/>.
+    /// </summary>
+    FixHorseFenrirOptionsSoulBarrierPlugIn = 49,
+
+    /// <summary>
+    /// The version of the <see cref="FixCharStatsForceWavePlugIn075"/>.
+    /// </summary>
+    FixCharStatsForceWave075 = 50,
+
+    /// <summary>
+    /// The version of the <see cref="FixCharStatsForceWavePlugIn095D"/>.
+    /// </summary>
+    FixCharStatsForceWave095d = 51,
+
+    /// <summary>
+    /// The version of the <see cref="FixCharStatsForceWavePlugInSeason6"/>.
+    /// </summary>
+    FixCharStatsForceWaveSeason6 = 52,
+
+    /// <summary>
+    /// The version of the <see cref="FixDefenseCalcsPlugIn075"/>.
+    /// </summary>
+    FixDefenseCalcs075 = 53,
+
+    /// <summary>
+    /// The version of the <see cref="FixDefenseCalcsPlugIn095D"/>.
+    /// </summary>
+    FixDefenseCalcs095d = 54,
+
+    /// <summary>
+    /// The version of the <see cref="FixDefenseCalcsPlugInSeason6"/>.
+    /// </summary>
+    FixDefenseCalcsSeason6 = 55,
+
+    /// <summary>
+    /// The version of the <see cref="FixDamageCalcsPlugIn075"/>.
+    /// </summary>
+    FixDamageCalcs075 = 56,
+
+    /// <summary>
+    /// The version of the <see cref="FixDamageCalcsPlugIn095D"/>.
+    /// </summary>
+    FixDamageCalcs095d = 57,
+
+    /// <summary>
+    /// The version of the <see cref="FixDamageCalcsPlugInSeason6"/>.
+    /// </summary>
+    FixDamageCalcsSeason6 = 58,
+
+    /// <summary>
+    /// The version of the <see cref="FixEventItemsDropFromMonstersUpdatePlugInSeason6"/>.
+    /// </summary>
+    FixEventItemsDropFromMonstersSeason6 = 59,
+
+    /// <summary>
+    /// The version of the <see cref="FixEventItemsDropFromMonstersUpdatePlugIn095d"/>.
+    /// </summary>
+    FixEventItemsDropFromMonsters095d = 60,
+
+    /// <summary>
+    /// The version of the <see cref="FixItemRequirementsPlugIn2"/>.
+    /// </summary>
+    FixItemRequirements2 = 61,
+
+    /// <summary>
+    /// The version of the <see cref="FixJeweleryPetsDamageCalcsPlugIn075"/>.
+    /// </summary>
+    FixJeweleryPetsDamageCalcs075 = 62,
+
+    /// <summary>
+    /// The version of the <see cref="FixJeweleryPetsDamageCalcsPlugIn095D"/>.
+    /// </summary>
+    FixJeweleryPetsDamageCalcs095d = 63,
+
+    /// <summary>
+    /// The version of the <see cref="FixJeweleryPetsDamageCalcsPlugInSeason6"/>.
+    /// </summary>
+    FixJeweleryPetsDamageCalcsSeason6 = 64,
+
+    /// <summary>
+    /// The version of the <see cref="FixSkillMultipliersPlugIn"/>.
+    /// </summary>
+    FixSkillMultipliers = 65,
 }

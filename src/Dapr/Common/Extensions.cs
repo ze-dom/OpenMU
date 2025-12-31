@@ -5,6 +5,7 @@
 namespace MUnique.OpenMU.Dapr.Common;
 
 using System.Threading;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -65,7 +66,18 @@ public static class Extensions
     {
         return services
             .AddSingleton(plugInConfigurations)
-            .AddSingleton<PlugInManager>();
+            .AddSingleton<PlugInManager>()
+            .AddTransient<ReferenceHandler, ByDataSourceReferenceHandler>(provider =>
+            {
+                var persistenceContextProvider = provider.GetService<IPersistenceContextProvider>();
+                var dataSource = new GameConfigurationDataSource(
+                    provider.GetService<ILogger<GameConfigurationDataSource>>()!,
+                    persistenceContextProvider!);
+                var configId = persistenceContextProvider!.CreateNewConfigurationContext().GetDefaultGameConfigurationIdAsync(default).AsTask().WaitAndUnwrapException();
+                dataSource.GetOwnerAsync(configId!.Value).AsTask().WaitAndUnwrapException();
+                var referenceHandler = new ByDataSourceReferenceHandler(dataSource);
+                return referenceHandler;
+            });
     }
 
     /// <summary>
@@ -89,7 +101,7 @@ public static class Extensions
                 return;
             }
 
-            var configs = await persistenceContextProvider.CreateNewTypedContext<PlugInConfiguration>(false).GetAsync<PlugInConfiguration>().ConfigureAwait(false);
+            var configs = await persistenceContextProvider.CreateNewTypedContext(typeof(PlugInConfiguration), false).GetAsync<PlugInConfiguration>().ConfigureAwait(false);
             plugInConfigurations.AddRange(configs);
         }
         catch
@@ -315,7 +327,7 @@ public static class Extensions
             try
             {
                 var persistenceContextProvider = serviceProvider.GetService<IPersistenceContextProvider>() ?? throw new Exception($"{nameof(IPersistenceContextProvider)} not registered.");
-                using var context = persistenceContextProvider.CreateNewTypedContext<SystemConfiguration>(false);
+                using var context = persistenceContextProvider.CreateNewTypedContext(typeof(SystemConfiguration), false);
 
                 // TODO: this may lead to a deadlock?
                 var configuration = context.GetAsync<SystemConfiguration>().AsTask().WaitAndUnwrapException().FirstOrDefault();

@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using MUnique.OpenMU.Web.Shared;
+
 namespace MUnique.OpenMU.Web.AdminPanel.Pages;
 
 using System.Collections;
@@ -15,7 +17,7 @@ using Microsoft.AspNetCore.Components.QuickGrid;
 using Microsoft.Extensions.Logging;
 using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.Persistence;
-using MUnique.OpenMU.Web.AdminPanel.Components.Form;
+using MUnique.OpenMU.Web.Shared.Components.Form;
 
 /// <summary>
 /// Razor page which shows objects of the specified type in a grid.
@@ -142,9 +144,8 @@ public partial class EditConfigGrid : ComponentBase, IAsyncDisposable
         }
         else
         {
-            var createContextMethod = typeof(IPersistenceContextProvider).GetMethod(nameof(IPersistenceContextProvider.CreateNewTypedContext))!.MakeGenericMethod(this.Type);
-            using var context = (IContext)createContextMethod.Invoke(this.PersistenceContextProvider, new object[] { true, gameConfiguration })!;
-            data = await context.GetAsync(this.Type, cancellationToken);
+            using var context = this.PersistenceContextProvider.CreateNewTypedContext(this.Type, true, gameConfiguration);
+            data = await context.GetAsync(this.Type, cancellationToken).ConfigureAwait(false);
         }
 
         this._viewModels = data.OfType<object>()
@@ -196,7 +197,7 @@ public partial class EditConfigGrid : ComponentBase, IAsyncDisposable
     {
         var cancellationToken = this._disposeCts?.Token ?? default;
         var gameConfiguration = await this.DataSource.GetOwnerAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-        using var creationContext = this.PersistenceContextProvider.CreateNewContext(gameConfiguration);
+        using var creationContext = this.PersistenceContextProvider.CreateNewTypedContext(this.Type!, true, gameConfiguration);
         var newObject = creationContext.CreateNew(this.Type!);
         var parameters = new ModalParameters();
         var modalType = typeof(ModalCreateNew<>).MakeGenericType(this.Type!);
@@ -212,6 +213,8 @@ public partial class EditConfigGrid : ComponentBase, IAsyncDisposable
         if (!result.Cancelled)
         {
             await creationContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await this.DataSource.DiscardChangesAsync().ConfigureAwait(false);
+
             this.ToastService.ShowSuccess("New object successfully created.");
             this._viewModels = null;
             this._loadTask = Task.Run(() => this.LoadDataAsync(cancellationToken), cancellationToken);
