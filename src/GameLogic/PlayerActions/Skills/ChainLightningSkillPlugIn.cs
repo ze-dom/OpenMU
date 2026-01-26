@@ -16,7 +16,8 @@ using MUnique.OpenMU.PlugIns;
 /// <summary>
 /// Handles the chain lightning skill of the summoner class. Additionally to the attacked target, it will hit up to two additional targets.
 /// </summary>
-[PlugIn(nameof(ChainLightningSkillPlugIn), "Handles the chain lightning skill of the summoner class. Additionally to the attacked target, it will hit up to two additional targets.")]
+[PlugIn]
+[Display(Name = nameof(PlugInResources.ChainLightningSkillPlugIn_Name), Description = nameof(PlugInResources.ChainLightningSkillPlugIn_Description), ResourceType = typeof(PlugInResources))]
 [Guid("298C5FF8-03A2-476B-B064-A59E73DFCEB9")]
 public class ChainLightningSkillPlugIn : IAreaSkillPlugIn
 {
@@ -28,6 +29,11 @@ public class ChainLightningSkillPlugIn : IAreaSkillPlugIn
     {
         bool FilterTarget(IAttackable attackable)
         {
+            if (!attackable.IsAlive)
+            {
+                return false;
+            }
+
             if (attackable is Monster { SummonedBy: null } or Destructible)
             {
                 return true;

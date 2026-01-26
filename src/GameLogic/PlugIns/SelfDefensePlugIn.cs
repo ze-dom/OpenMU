@@ -7,14 +7,13 @@ namespace MUnique.OpenMU.GameLogic.PlugIns;
 using System;
 using System.Runtime.InteropServices;
 using MUnique.OpenMU.GameLogic.NPC;
-using MUnique.OpenMU.GameLogic.Views;
-using MUnique.OpenMU.Interfaces;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
 /// Updates the state of the active self defenses on every second and every hit.
 /// </summary>
-[PlugIn(nameof(SelfDefensePlugIn), "Updates the state of the self defense system.")]
+[PlugIn]
+[Display(Name = nameof(PlugInResources.SelfDefensePlugIn_Name), Description = nameof(PlugInResources.SelfDefensePlugIn_Description), ResourceType = typeof(PlugInResources))]
 [Guid("BA4753EA-4D2B-488C-BB6B-4A127E28630A")]
 public class SelfDefensePlugIn : IPeriodicTaskPlugIn, IAttackableGotHitPlugIn, ISupportCustomConfiguration<SelfDefensePlugInConfiguration>, ISupportDefaultCustomConfiguration
 {
@@ -44,8 +43,8 @@ public class SelfDefensePlugIn : IPeriodicTaskPlugIn, IAttackableGotHitPlugIn, I
     public void AttackableGotHit(IAttackable attackable, IAttacker attacker, HitInfo hitInfo)
     {
         var defender = attackable as Player ?? (attackable as Monster)?.SummonedBy;
-        var attackerPlayer = attacker as Player ?? (attackable as Monster)?.SummonedBy;
-        if (defender is null || attackerPlayer is null)
+        var attackerPlayer = attacker as Player ?? (attacker as Monster)?.SummonedBy;
+        if (defender is null || attackerPlayer is null || defender == attackerPlayer)
         {
             return;
         }
@@ -104,15 +103,13 @@ public class SelfDefensePlugIn : IPeriodicTaskPlugIn, IAttackableGotHitPlugIn, I
 
     private async ValueTask BeginSelfDefenseAsync(Player attacker, Player defender)
     {
-        var message = $"Self defense is initiated by {attacker.Name}'s attack to {defender.Name}!";
-        await defender.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync(message, MessageType.BlueNormal)).ConfigureAwait(false);
-        await attacker.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync(message, MessageType.BlueNormal)).ConfigureAwait(false);
+        await defender.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.SelfDefenseInitiatedFormat), attacker.Name, defender.Name).ConfigureAwait(false);
+        await attacker.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.SelfDefenseInitiatedFormat), attacker.Name, defender.Name).ConfigureAwait(false);
     }
 
     private async ValueTask EndSelfDefenseAsync(Player attacker, Player defender)
     {
-        var message = $"Self defense of {defender.Name} against {attacker.Name} diminishes.";
-        await defender.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync(message, MessageType.BlueNormal)).ConfigureAwait(false);
-        await attacker.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync(message, MessageType.BlueNormal)).ConfigureAwait(false);
+        await defender.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.SelfDefenseDiminishesFormat), defender.Name, attacker.Name).ConfigureAwait(false);
+        await attacker.ShowLocalizedBlueMessageAsync(nameof(PlayerMessage.SelfDefenseDiminishesFormat), defender.Name, attacker.Name).ConfigureAwait(false);
     }
 }

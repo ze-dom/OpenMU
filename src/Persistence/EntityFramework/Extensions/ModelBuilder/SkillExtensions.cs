@@ -13,14 +13,45 @@ using MUnique.OpenMU.Persistence.EntityFramework.Model;
 internal static class SkillExtensions
 {
     /// <summary>
+    /// Applies the settings for the <see cref="Skill"/> entity.
+    /// </summary>
+    /// <param name="builder">The builder.</param>
+    public static void Apply(this EntityTypeBuilder<Skill> builder)
+    {
+        builder.Property(p => p.Name).HasConversion(LocalizedStringConverter.Instance);
+    }
+
+    /// <summary>
+    /// Applies the settings for the <see cref="Skill"/> entity.
+    /// </summary>
+    /// <param name="builder">The builder.</param>
+    public static void Apply(this EntityTypeBuilder<SkillComboDefinition> builder)
+    {
+        builder.Property(p => p.Name).HasConversion(LocalizedStringConverter.Instance);
+    }
+
+    /// <summary>
     /// Applies the settings for the <see cref="SkillEntry"/> entity.
     /// </summary>
     /// <param name="builder">The builder.</param>
     public static void Apply(this EntityTypeBuilder<SkillEntry> builder)
     {
         builder.Ignore(s => s.PowerUps);
+        builder.Ignore(s => s.PowerUpsPvp);
         builder.Ignore(s => s.PowerUpDuration);
+        builder.Ignore(s => s.PowerUpDurationPvp);
+        builder.Ignore(s => s.PowerUpChance);
+        builder.Ignore(s => s.PowerUpChancePvp);
         builder.Ignore(s => s.Attributes);
+    }
+
+    /// <summary>
+    /// Applies the settings for the <see cref="MasterSkillRoot"/> entity.
+    /// </summary>
+    /// <param name="builder">The builder.</param>
+    public static void Apply(this EntityTypeBuilder<MasterSkillRoot> builder)
+    {
+        builder.Property(p => p.Name).HasConversion(LocalizedStringConverter.Instance);
     }
 
     /// <summary>
@@ -30,5 +61,14 @@ internal static class SkillExtensions
     public static void Apply(this EntityTypeBuilder<MasterSkillDefinition> builder)
     {
         builder.HasOne(s => s.RawRoot);
+    }
+
+    /// <summary>
+    /// Applies the settings for the <see cref="MagicEffectDefinition"/> entity.
+    /// </summary>
+    /// <param name="builder">The builder.</param>
+    public static void Apply(this EntityTypeBuilder<MagicEffectDefinition> builder)
+    {
+        builder.Property(p => p.Name).HasConversion(LocalizedStringConverter.Instance);
     }
 }
