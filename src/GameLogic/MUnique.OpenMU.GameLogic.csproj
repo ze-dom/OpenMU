@@ -6,6 +6,9 @@
     <WarningsAsErrors>nullable;CS4014;VSTHRD110;VSTHRD100</WarningsAsErrors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Reference for MY changes in this file:
+         https://www.paraesthesia.com/archive/2022/09/30/strongly-typed-resources-with-net-core/-->
+    <CoreCompileDependsOn>PrepareResources;$(CompileDependsOn)</CoreCompileDependsOn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -59,10 +62,18 @@
     <EmbeddedResource Update="Properties\PlayerMessage.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PlayerMessage.Designer.cs</LastGenOutput>
+      <!--<StronglyTypedFileName>Properties\PlayerMessage.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>MUnique.OpenMU.GameLogic.Properties</StronglyTypedNamespace>
+      <StronglyTypedClassName>PlayerMessage</StronglyTypedClassName>-->
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\PlugInResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PlugInResources.Designer.cs</LastGenOutput>
+      <!--<StronglyTypedFileName>Properties\PlugInResources.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>MUnique.OpenMU.GameLogic.Properties</StronglyTypedNamespace>
+      <StronglyTypedClassName>PlugInResources</StronglyTypedClassName>-->
     </EmbeddedResource>
   </ItemGroup>
 </Project>
